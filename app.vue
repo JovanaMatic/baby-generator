@@ -46,6 +46,12 @@
       buttons: [ Length.LONG, Length.ALL, Length.SHORT ]
     }
   ]
+
+  const handleDelete = (index: number) => {
+    const filteredNames = [...selectedNames.value]
+    filteredNames.splice(index, 1)
+    selectedNames.value = filteredNames
+  }
 </script>
 
 <template>
@@ -64,10 +70,7 @@
       <button @click="computeSelectedNames" class="primary">Find names</button>
     </div>
     <div class=cards-container>
-      <div class="card" v-for="selectedName in selectedNames" :key="selectedName">
-        <h4>{{ selectedName }}</h4>
-        <p>x</p>
-      </div>
+      <Names v-for="(name, index) in selectedNames" :key="name" :name="name" @delete="handleDelete(index)" :index="index"/>
     </div>
   </div>
 </template>
@@ -110,25 +113,6 @@
     display: flex;
     margin-top: 3rem;
     flex-wrap: wrap;
-  }
-
-  .card {
-    background-color: rgb(27, 60, 138);
-    width: 28%;
-    color: white;
-    border-radius: 1rem;
-    padding: 0.1rem;
-    margin-right: 0.5rem;
-    margin-bottom: 1rem;
-    position: relative;
-  }
-
-  .card p {
-    position: absolute;
-    top: -29%;
-    left: 92.5%;
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.178)
   }
 
 </style>
