@@ -25,9 +25,27 @@
       if (name.length === Length.ALL) return true
       else return name.length === options.value.length
     })
-    
+
     selectedNames.value = filteredNames.map(name => name.name)
   }
+
+  const optionsArray = [
+    {
+      title: '1) Choose a gender',
+      category: 'gender',
+      buttons: [ Gender.BOY, Gender.UNISEX, Gender.GIRL ]
+    },
+    {
+      title: '2) Choose the name popularity',
+      category: 'popularity',
+      buttons: [ Popularity.TRENDY, Popularity.UNIQUE ]
+    },
+    {
+      title: '3) Choose name length',
+      category: 'length',
+      buttons: [ Length.LONG, Length.ALL, Length.SHORT ]
+    }
+  ]
 </script>
 
 <template>
@@ -37,72 +55,12 @@
 
     <div class="options-container">
 
-      <div class="option-container">
-        <h4>1) Choose a gender</h4>
-        <div class="option-buttons">
-          <button
-           class="option option-left"
-           :class="options.gender === Gender.BOY && 'option-active'"
-           @click="options.gender = Gender.BOY"
-          >Boy
-          </button>
-          <button
-           class="option"
-           :class="options.gender === Gender.UNISEX && 'option-active'"
-           @click="options.gender = Gender.UNISEX"
-          >Unisex
-          </button>
+      <Option v-for="option in optionsArray"
+       :key="option.title"
+       :option="option"
+       :options="options"
+       />
 
-          <button
-           class="option option-right"
-           :class="options.gender === Gender.GIRL && 'option-active'"
-           @click="options.gender = Gender.GIRL"
-          >Girl
-          </button>
-        </div>
-      </div>
-
-        <div class="option-container">
-        <h4>2) Choose the name popularity</h4>
-        <div class="option-buttons">
-          <button
-           class="option option-left"
-           :class="options.popularity === Popularity.TRENDY && 'option-active'"
-           @click="options.popularity = Popularity.TRENDY"
-          >Trendy
-          </button>
-          <button
-           class="option option-right"
-           :class="options.popularity === Popularity.UNIQUE && 'option-active'"
-           @click="options.popularity = Popularity.UNIQUE"
-          >Unique
-          </button>
-        </div>
-      </div>
-
-      <div class="option-container">
-        <h4>3) Choose name length</h4>
-        <div class="option-buttons">
-          <button
-           class="option option-left"
-           :class="options.length === Length.LONG && 'option-active'"
-           @click="options.length = Length.LONG"
-          >Long
-          </button>
-          <button
-           class="option"
-           :class="options.length === Length.ALL && 'option-active'"
-           @click="options.length = Length.ALL"
-          >All
-          </button>
-          <button
-           class="option option-right"
-           :class="options.length === Length.SHORT && 'option-active'"
-           @click="options.length = Length.SHORT"
-          >Short
-          </button>
-        </div>
-      </div>
       <button @click="computeSelectedNames" class="primary">Find names</button>
     </div>
     <div class=cards-container>
@@ -135,35 +93,6 @@
     margin: 0 auto;
     margin-top: 4rem;
     position: relative;
-  }
-
-  .option-container {
-    margin-bottom: 2rem;
-  }
-
-  .option {
-    background-color: white;
-    outline: 0.15rem solid rgb(249, 87, 89);
-    border: none;
-    padding: 0.75rem;
-    width: 12rem;
-    font-size: 1rem;
-    color: rgb(27, 60, 138);
-    cursor: pointer;
-    font-weight: 200;
-  }
-
-  .option-left {
-    border-radius: 1rem 0 0 1rem;
-  }
-
-  .option-right {
-    border-radius: 0rem 1rem 1rem 0;
-  }
-
-  .option-active {
-    background-color: rgb(249, 87, 89);
-    color: white;
   }
 
   .primary {
