@@ -1,21 +1,6 @@
 <script setup lang="ts">
 
-  enum Gender {
-    GIRL = 'Girl',
-    BOY = 'Boy',
-    UNISEX = 'Unisex'
-  }
-
-  enum Popularity {
-    TRENDY = 'Trendy',
-    UNIQUE = 'Unique',
-  }
-
-  enum Length {
-    LONG = 'Long',
-    SHORT = 'Short',
-    ALL = 'All'
-  }
+  import { Gender, Popularity, Length, names } from '@/data'
 
   interface OptionsState {
     gender: string,
@@ -28,6 +13,21 @@
     popularity: Popularity.TRENDY,
     length: Length.SHORT
   })
+
+  // create another state - Array of names and specify it as an array type of strings
+
+  const selectedNames = ref<string[]>([])
+
+  const computeSelectedNames = () => {
+    const filteredNames = names.filter(name => name.gender === options.value.gender)
+    .filter(name => name.popularity === options.value.popularity)
+    .filter(name => {
+      if (name.length === Length.ALL) return true
+      else return name.length === options.value.length
+    })
+    
+    selectedNames.value = filteredNames.map(name => name.name)
+  }
 </script>
 
 <template>
@@ -103,7 +103,9 @@
           </button>
         </div>
       </div>
+      <button @click="computeSelectedNames" class="primary">Find names</button>
     </div>
+    <p v-for="selectedName in selectedNames">{{ selectedName }}</p>
   </div>
 </template>
 
@@ -157,6 +159,17 @@
   .option-active {
     background-color: rgb(249, 87, 89);
     color: white;
+  }
+
+  .primary {
+    background-color: rgb(249, 87, 89);
+    color: white;
+    border-radius: 6.5rem;
+    border: none;
+    padding: 0.75rem 4rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
   }
 
 </style>
